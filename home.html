@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HematoVision - Blood Cell Classification</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #f2f6fc;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        .container {
+            margin-top: 80px;
+            padding: 40px;
+            background: white;
+            width: 50%;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+        }
+        input[type="file"] {
+            padding: 10px;
+            margin: 20px;
+        }
+        input[type="submit"] {
+            padding: 10px 25px;
+            font-size: 16px;
+            background-color: #3498db;
+            border: none;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+        footer {
+            margin-top: 40px;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>HematoVision</h1>
+        <h2>Advanced Blood Cell Classification Using Transfer Learning</h2>
+        <p>Upload a blood cell image to classify into Eosinophil, Lymphocyte, Monocyte, or Neutrophil.</p>
+
+        <form action="/predict" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept="image/*" required>
+            <br>
+            <input type="submit" value="Predict Cell Type">
+        </form>
+    </div>
+
+    <footer>
+        <p>SmartBridge Internship Project | AIML | Sivanandini Nallamekala</p>
+    </footer>
+
+</body>
+</html>
