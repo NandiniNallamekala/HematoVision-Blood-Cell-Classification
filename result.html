@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prediction Result - HematoVision</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #eef3f9;
+        }
+        .result-box {
+            margin-top: 100px;
+            padding: 40px;
+            background: white;
+            width: 50%;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 15px;
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        .prediction {
+            font-size: 28px;
+            color: #27ae60;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        a {
+            text-decoration: none;
+            color: white;
+            background-color: #3498db;
+            padding: 10px 20px;
+            border-radius: 8px;
+        }
+        a:hover {
+            background-color: #2980b9;
+        }
+        footer {
+            margin-top: 40px;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="result-box">
+        <h1>Prediction Result</h1>
+        <p>The uploaded blood cell image is classified as:</p>
+        <div class="prediction">
+            {{ prediction }}
+        </div>
+        <br><br>
+        <a href="/">Upload Another Image</a>
+    </div>
+
+    <footer>
+        <p>HematoVision | SmartBridge AIML Project | KLMCEW</p>
+    </footer>
+
+</body>
+</html>
