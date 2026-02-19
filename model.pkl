@@ -1,0 +1,94 @@
+# HematoVision - Blood Cell Classification using Transfer Learning
+
+import os
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.applications import MobileNetV2
+from tensorflow.keras.layers import Dense, GlobalAveragePooling2D, Dropout
+from tensorflow.keras.models import Model
+from tensorflow.keras.optimizers import Adam
+
+# Step 1: Dataset Path (Change this to your dataset folder)
+dataset_path = "dataset"  
+# Folder structure:
+# dataset/
+# ├── eosinophil/
+# ├── lymphocyte/
+# ├── monocyte/
+# └── neutrophil/
+
+# Step 2: Image Preprocessing
+img_size = (224, 224)
+batch_size = 32
+
+train_datagen = ImageDataGenerator(
+    rescale=1./255,
+    validation_split=0.2,
+    rotation_range=20,
+    zoom_range=0.2,
+    horizontal_flip=True
+)
+
+train_generator = train_datagen.flow_from_directory(
+    dataset_path,
+    target_size=img_size,
+    batch_size=batch_size,
+    class_mode='categorical',
+    subset='training'
+)
+
+val_generator = train_datagen.flow_from_directory(
+    dataset_path,
+    target_size=img_size,
+    batch_size=batch_size,
+    class_mode='categorical',
+    subset='validation'
+)
+
+# Step 3: Load Pre-trained Model (Transfer Learning)
+base_model = MobileNetV2(
+    weights='imagenet',
+    include_top=False,
+    input_shape=(224, 224, 3)
+)
+
+# Freeze base model layers
+for layer in base_model.layers:
+    layer.trainable = False
+
+# Step 4: Add Custom Layers for Blood Cell Classification
+x = base_model.output
+x = GlobalAveragePooling2D()(x)
+x = Dense(128, activation='relu')(x)
+x = Dropout(0.5)(x)
+output_layer = Dense(4, activation='softmax')(
+    x
+)  # 4 classes: eosinophil, lymphocyte, monocyte, neutrophil
+
+model = Model(inputs=base_model.input, outputs=output_layer)
+
+# Step 5: Compile Model
+model.compile(
+    optimizer=Adam(learning_rate=0.0001),
+    loss='categorical_crossentropy',
+    metrics=['accuracy']
+)
+
+# Step 6: Train Model
+epochs = 10  # You can increase to 15-20 for better accuracy
+
+history = model.fit(
+    train_generator,
+    validation_data=val_generator,
+    epochs=epochs
+)
+
+# Step 7: Create model folder if not exists
+if not os.path.exists("model"):
+    os.makedirs("model")
+
+# Step 8: Save the Model
+model.save("model/hematovision_model.h5")
+
+print("Model trained and saved successfully in model/hematovision_model.h5")
